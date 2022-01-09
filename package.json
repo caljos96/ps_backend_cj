@@ -1,0 +1,15 @@
+{
+  "name": "backend",
+  "version": "1.0.0",
+  "description": "\"practice RETfull API JCVL03\"",
+  "main": "index.js",
+  "scripts": {
+    "start": "node .",
+    "dev": "nodemon ."
+  },
+  "author": "calvin",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.2"
+  }
+}
