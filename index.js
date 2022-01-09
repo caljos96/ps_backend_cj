@@ -5,7 +5,7 @@ const express = require("express");
 const app = express();
 
 //setting : middleware
-app.use(express.json()); //body-parser;
+// app.use(express.json()); //body-parser;
 
 //database
 const users = [{ id: 1, name: "calvin", gender: "male" }];
@@ -21,13 +21,42 @@ app.get("/users", (req, res) => {
 });
 
 //Post : Users
-app.post("/users", (req, res) => {
+app.post("/users", express.json(), (req, res) => {
   console.log("req.body : ", req.body);
 
-  users.push(req.body);
-  console.log("users : ", users);
+  const newUser = {
+    id: users.length + 1,
+    name: req.body.name,
+    gender: req.body.gender,
+  };
+  users.push(newUser);
 
-  res.status(200).send("POST Success");
+  res.status(200).send(users);
+});
+
+//Delete : Users
+app.delete("/users/:id", (req, res) => {
+  console.log(req.params);
+  const id = Number(req.params.id);
+
+  //search index user with given id
+  let index = null;
+  for (let i = 0; i < users.length; i++) {
+    if (users[i].id === id) {
+      index = i;
+      break;
+    }
+  }
+
+  //error handling
+  if (index === null) {
+    res.status(404).send(`user with id : ${id} is not found`);
+  }
+
+  //delete user at index user with given id
+  users.splice(index, 1);
+
+  res.status(200).send(users);
 });
 
 //running server
